@@ -2,6 +2,8 @@ name: gcp-ape-pre-stg
 
 on:
   create:
+    branches-ignore:
+      - "**"
     tags:
       - pre-stg
 
