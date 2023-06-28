@@ -1,0 +1,36 @@
+name: gcp-ape
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: GAE deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build
+        run: yarn build
+
+      - name: Deploy an App Engine app
+        id: deploy-app
+        uses: google-github-actions/deploy-appengine@v0.3.1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          deliverables: app.yaml
+          credentials: ${{ secrets.GCP_SA_KEY }}
+          version: v1
